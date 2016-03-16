@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "hexo": "^3.1.1",
+    "hexo-browsersync": "^0.2.0",
     "hexo-deployer-git": "^0.1.0",
     "hexo-deployer-heroku": "^0.1.0",
     "hexo-deployer-openshift": "^0.1.0",
@@ -19,6 +20,7 @@
     "hexo-generator-tag": "^0.2.0",
     "hexo-renderer-ejs": "^0.1.1",
     "hexo-renderer-marked": "^0.2.10",
+    "hexo-renderer-org": "^0.2.4",
     "hexo-renderer-stylus": "^0.2.3",
     "hexo-server": "^0.1.3"
   }
