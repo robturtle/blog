@@ -8,13 +8,15 @@ subtitle: "articles & thoughts"
 description: "Yang Liu's articles & thoughts"
 author: Yang Liu
 email: jeremyrobturtle@gmail.com
-language: zh-CN en-US
+language: en
+avatar: https://avatars1.githubusercontent.com/u/3524125?v=3&s=460
+favicon: /me.jpeg
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://blog.yangliu.online
-root: /
+url: http://robturtle.github.io
+root: /blog/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 
@@ -29,7 +31,13 @@ i18n_dir: :lang
 skip_render:
 
 # Writing
-new_post_name: :title.org # File name of new posts
+org:
+  emacs: '/Applications/SpacEmacs.app/Contents/MacOS/Emacs'
+  common: |
+          #+OPTIONS: toc:nil
+  cachedir: './hexo-org-cache/'
+
+new_post_name: :title.md # File name of new posts
 default_layout: post
 titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
