@@ -11,7 +11,7 @@ email: jeremyrobturtle@gmail.com
 language: en
 avatar: https://avatars1.githubusercontent.com/u/3524125?v=3&s=460
 favicon: /me.jpeg
-timezone:
+timezone: America/New_York
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
