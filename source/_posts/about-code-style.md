@@ -1,5 +1,5 @@
 ---
-title: about-code-style
+title: 关于代码规范
 date: 2016-03-28 17:02:32
 categories:
 - chit-chat
@@ -7,8 +7,6 @@ tags:
 - Java
 - "code style"
 ---
-
-# 关于代码规范
 
 > 最近小组林生提议看看九章算法的视频，第一节课讨论代码规范（干得漂亮！），顺便记录一下编程以来碰到的印象最深的几个规范问题。
 
