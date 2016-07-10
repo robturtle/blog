@@ -87,13 +87,13 @@ a2dismod worker # 最终的排错方案
 
 考虑 C 语言的两类原子，一种是类型 （type），类型与类型之间不存在交互；一种是类型操作符 (type op)， 操作符能作用于类型上形成新的类型。比如：`*` 作用于 `int` 上，形成新的类型 `int*`。现在我们考察一下它们的正交性：
 
-|              | int  | void | array | poineter | function parameter | function return type |
-| ------------ | ---- | ---- | ----- | -------- | ------------------ | -------------------- |
-| **int**      | N/A  | N/A  | O     | O        | O                  | O                    |
-| **void**     |      | N/A  | X     | O        | X                  | O                    |
-| **array**    |      |      | O     | O        | X                  | X                    |
-| **pointer**  |      |      |       | O        | O                  | O                    |
-| **function** |      |      |       |          | X                  | X                    |
+|              | array | poineter | function parameter | function return type |
+| ------------ | ----- | -------- | ------------------ | -------------------- |
+| **int**      | O     | O        | O                  | O                    |
+| **void**     | X     | O        | X                  | O                    |
+| **array**    | O     | O        | X                  | X                    |
+| **pointer**  | --    | O        | O                  | O                    |
+| **function** | --    | --       | X                  | X                    |
 
 可以看到，C 的正交性相当差劲。在表中被标为 `X` 的地方即是不满足正交性的地方，同时，每一个`X`所在的交叉点，基本上都是 C 新手常常迷惑且容易犯错的地方。可以说其语言设计上的不规则，其危害最终却转嫁到每一个系统的学习者身上了。
 
