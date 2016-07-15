@@ -4,7 +4,6 @@ date: 2016-07-15 01:51:51
 tags:
 - ADT
 - DS
-
 ---
 
 > 今天地铁上被问到这个问题，考虑到已经是连续不同三个人问了这个问题，我就在此处一并作答并做一些引申。
@@ -35,4 +34,20 @@ delete x from A->x->B = A->B
 可以说，并不存在判断何时需要 dummy head 的问题，我们所有的链表实现都应当具备这一结构让空链表依然满足能力约定，使得它成为一个完备的链表 ADT 实现。只是因为在某些算法里我们并没有碰到违反约定的情况，从而给人一种不需要 dummy 的观感而已。
 
 那么，回到问题，什么时候需要 dummy 呢？当我们需要用到一个满足能力约定的空链表之时咯。
+
+**引申2**：
+
+上文里我说到这个问题还可以归咎于语言设计，这又是何解呢？就是因为 Java 里 `null` 这一坏的设计，让几乎所有使用 `null` 的设计都变成了对 `null` 的滥用。在大部分的情况下，“空”的概念依然具备某些能力，这就需要我们显式地定义出来。对于链表来说，就应当是类似这样：
+
+```java
+interface ListNode<T> { T getValue(); ListNode<T> getNext(); }
+class ValueNode<T> implements ListNode<T> {
+  T getValue() { return this.value; }
+  ListNode<T> getNext() { return this.next; }
+}
+class EmptyNode implements ListNode<?> {
+  T getValue() { throw new UnsupportedOperationException(); }
+  ListNode<?> getNext() { return this.next; }
+}
+```
 
