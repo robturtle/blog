@@ -4,6 +4,7 @@ date: 2016-07-15 01:51:51
 tags:
 - ADT
 - DS
+
 ---
 
 > 今天地铁上被问到这个问题，考虑到已经是连续不同三个人问了这个问题，我就在此处一并作答并做一些引申。
@@ -40,14 +41,28 @@ delete x from A->x->B = A->B
 上文里我说到这个问题还可以归咎于语言设计，这又是何解呢？就是因为 Java 里 `null` 这一坏的设计，让几乎所有使用 `null` 的设计都变成了对 `null` 的滥用。在大部分的情况下，“空”的概念依然具备某些能力，这就需要我们显式地定义出来。对于链表来说，就应当是类似这样：
 
 ```java
-interface ListNode<T> { T getValue(); ListNode<T> getNext(); }
+interface ListNode<T> { ListNode<T> getNext(); }
 class ValueNode<T> implements ListNode<T> {
   T getValue() { return this.value; }
   ListNode<T> getNext() { return this.next; }
+  ...
 }
 class EmptyNode implements ListNode<?> {
-  T getValue() { throw new UnsupportedOperationException(); }
   ListNode<?> getNext() { return this.next; }
+  ...
 }
 ```
 
+设 `e` 为空链表，由于下面三个不变式：
+
+1. `e->A = A` 
+2. `A->e = A`
+3. `A->e->B = A->B`
+
+我们可以设计 `e->X->e` 为所有链表的 regular form 来保证所有操作的合法性。当然，我们也可以引用一个代理类：
+
+```java
+List<T> { final ListNode<T> dummy = new ListNode<>(); ... }
+```
+
+让该类来保证链表始终处于 regular form 的状态。当然有的时候我们也可以使用 irregular form 的形式，因为允许任意插入空链表会使得很多算法的实现变得简单优雅许多。而这，恰恰是链表 ADT 原本就赋予它的能力。
