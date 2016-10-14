@@ -4,6 +4,7 @@ category: chit-chat
 tags:
 - methodology
 - writing
+date: 2016-03-16
 ---
 
 ## 历史
