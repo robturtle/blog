@@ -17,15 +17,15 @@ tags:
 
 ### 1. 确认 Host-only Network
 
-打开 virtualbox 自身的设置选项，在 Network 标签页上可以看到我们已经有了两个默认设置好的宿主网络配置，如果没有，就自己新建一个就好了。
+打开 virtualbox 自身的设置选项，在 Network 标签页上可以看到我们已经有了一个默认设置好的宿主网络配置，如果没有，就自己新建一个就好了。
 
-![](/images/virtualbox1-global-settings.png)
+![](https://www.dropbox.com/s/xp0jfcvv757b8qf/Screenshot%202016-10-17%2021.11.20.png?raw=1)
 
 ### 2. 虚拟机建立 Host-only Network Adapter
 
 打开虚拟机的设置面板，在 Network 标签下，新建一个 Adapter，选择为 Host-only Adapter 即可。
 
-![](/images/virtualbox2-local-setting.png)
+![](https://www.dropbox.com/s/xp0jfcvv757b8qf/Screenshot%202016-10-17%2021.11.20.png?raw=1)
 
 注意勾上 Enable Network Adapter 。
 
@@ -55,7 +55,7 @@ sudo apt-get install openssh-server
 
 此时我们可以把虚拟机关闭了。然后在虚拟机启动的按钮角落，有一个小小的下拉按钮，通过它，我们就可以选择 headless 的模式启动，这样它就不会建立任何窗口了。
 
-![](/images/virtualbox3-start.png)
+![](https://www.dropbox.com/s/fbv8btuvo02ejae/Screenshot%202016-10-17%2021.14.03.png?raw=1)
 
 在 virtualbox 的预览窗口里看到系统启动完毕之后，我们就可以从 iTerm 里 ssh 进去咯：
 
@@ -99,5 +99,3 @@ Last login: Sun Jul 10 13:18:25 2016 from 192.168.59.3
 配置 Emacs 的嵌入终端 multi-term 的时候出现的 bug 就更隐晦了。总之任何有关 shell 的配置的事情，都涉及了无数的历史遗留、谜题和陷阱。而且因为 multi-term，zsh，以及 Emacs 本身都是非常脆弱而显得非常 bug-prone 的，一旦出现 bug 往往需要花上好一段时间才能判断问题究竟出在谁身上。在我目前的 Emacs 里，已知现存的终端相关的 bug 就还有不下 3 个。不过在非常小心地解决掉影响日常使用的之后，用起来还是算方便的。
 
 综合以上的便利设施，便可以好好享受 Emacs 下远程端虚拟端各种文件系统无缝切换的爽快了。
-
-![](/images/emacs-tramp.png)
