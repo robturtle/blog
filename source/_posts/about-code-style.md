@@ -123,7 +123,7 @@ Math.sqrt( Math.pi, Math.pow( Math.abs( a - findNeg( b ) ), Math.pow( 2, findNeg
 
 那么就没有一个比较好的方案了吗？其实分析上面这个问题，我认为争论的核心就在于：括号不能有效地分隔单元。的确，在很长一段时间里的绝大部分编辑器下，这个断言是成立的。不过，后来我们有了彩虹括号，给括号加上了对比显著的语法高亮了，这个问题在很大程度上就被环境了。这也是为什么我在上面的例子里没有开语法高亮的原因。现在考虑加上语法高亮，是这样：
 
-![](https://photos-2.dropbox.com/t/2/AACqzFYV_u99gy8IBVP6LmO6vmZvHwF7mJwGjeddOUWvFA/12/468099740/png/32x32/1/_/1/2/Screenshot%202016-03-28%2019.31.58.png/EOz4-OQDGM9iIAcoBw/63SeAOLb-aS_D7wYGy2Djtl2fhRPa7oeqi0m04Pxr_0?size=1024x768&size_mode=3)
+![](https://www.dropbox.com/s/6ao47f7d62muvo3/Screenshot%202016-03-28%2019.31.58.png?raw=1)
 
 注意上图的括号。
 
