@@ -100,13 +100,13 @@ class NFA
 end
 ```
 
-现在实现匹配的功能，匹配的过程可以看做从一个 epsilon closure set 沿着输入边转向下一个 epsilon closure set。注意这里面的 `set<vertex> -> [vertex] -> [set<vertex>] -> set<vertex>` 的转化过程，两个 flat_map 接一个 reduce。似乎嗅到了 Monad 的味道，唔。
+现在实现匹配的功能，匹配的过程可以看做从一个 epsilon closure set 沿着输入边转向下一个 epsilon closure set。注意这里面的 `set<vertex> -> [set<vertex>] -> set<vertex>` 的转化过程。
 
 ```ruby
   def match(string)
     cur = @head.epsilon_closure
     string.each_char do |c|
-      cur = cur.flat_map { |state| state[c].flat_map(&:epsilon_closure) }
+      cur = cur.flat_map { |state| state[c].map(&:epsilon_closure) }
                .reduce(Set.new, :+)
       return false if cur.empty?
     end
@@ -114,7 +114,7 @@ end
   end
 ```
 
-我个人对于这个表达能力还是比较满意的，能从比较高的层次把算法描述清楚。而且基于上面文献，这样的实现效率还是能够保证的。
+个人对于这个表达能力还是比较满意的，能从比较高的层次把算法描述清楚。而且基于上面文献，这样的实现效率还是能够保证的。
 
 测试一下, 测试的 NFA 为 `(abc|abd)*`：
 
