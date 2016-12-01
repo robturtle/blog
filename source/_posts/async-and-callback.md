@@ -36,7 +36,7 @@ int main()
 
 我们可以很容易地发现，在 C 里面的每一个所谓的 function ，实际上描述的就是一个按深度优先顺序展开的命令树。如下图：
 
-![](https://cacoo.com/diagrams/YTzvxa7mvasVHkOA-904A5.png)
+![](https://www.dropbox.com/s/myqy6h6cotssng3/call-tree.png?raw=1)
 
 因为这个命令树的展开顺序是确定的，我们可以很容易地发现，如果我们把原函数用它的函数体按这种顺序进行替换展开，展开后的函数，和原来的函数是等价的。也即上面的代码，和下面这段代码是等价的：
 
