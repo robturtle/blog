@@ -77,11 +77,15 @@ int main()
 global bool A_is_ready = false;
 global int A_result;
 
-function A() { A_result = 1 + 1; }
+function A() {
+  A_result = 1 + 1;
+  A_is_ready = true;
+}
 
 function B() {
   while (true) {
     if (A_is_ready) break;
+    sleep(1000_ms);
   }
   print(A_result);
 }
