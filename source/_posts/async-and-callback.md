@@ -101,9 +101,9 @@ function B() {
 global BlockingQueue messageQueue;
 global function messageDispatcher() {
   while (true) {
-	wait whenever messageQueue.empty();
-	msg = messageQueue.deque();
-	for (subscriber in subscribers[msg.type]) wake(subscriber, msg.type);
+    wait whenever messageQueue.empty();
+    msg = messageQueue.deque();
+    for (subscriber in subscribers[msg.type]) wake(subscriber, msg.type);
   }
 }
 
@@ -116,10 +116,8 @@ function A() {
 
 function B() {
   subscribers['A_is_ready'] = this;
-  while (true) {
-    wait for Message of type 'A_is_ready'
-    print(result);
-  }
+  wait for Message of type 'A_is_ready'
+  print(result);
 }
 ```
 
@@ -137,7 +135,7 @@ class A extends Messager {
 
 class B extends Messager {}
 
-B.on('A_is_ready', function() {
+B.once('A_is_ready', function() {
   print(result);
 })
 
