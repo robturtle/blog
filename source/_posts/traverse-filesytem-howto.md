@@ -135,10 +135,10 @@ Java 里的遍历，基于两个基本方法：`File#isDirectory()` 以及 `File
 public class traverse {
     public static void main(String... args) {
         File[] files = new File(".").listFiles();
-        showFiles(files, 0);
+        showFiles(files);
     }
 
-    public static void showFiles(File[] files, int depth) {
+    public static void showFiles(File[] files) {
         for (File file : files) {
             if (file.isDirectory()) {
                 System.out.println("Directory: " + file.getName());
