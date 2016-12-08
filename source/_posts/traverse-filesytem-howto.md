@@ -120,6 +120,7 @@ python << EOF
 import os
 from pprint import pprint
 pprint(list(os.walk('.')))
+EOF
 ```
 
 执行结果：
