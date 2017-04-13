@@ -1,50 +1,25 @@
 ---
-title: 且谈命令行 - 2
+title: About Shell 2
 date: 2016-07-29
 tags:
 - shell
 ---
 
-上次发了《且谈命令行》之后，被投诉知识点之间跳跃太大了。我看了一下也确实是，那篇文章并不适合用作入门阅读，而是提供给具备基础使用知识的人一个小的总结。
-
-如果真要从那篇文章作为命令行入门的基础的话，那么它还缺失了一个大的版块，我现在在这把它补上。为什么会缺呢？因为当时我写那篇文章的时候只是从进程的角度切入，主要是讲命令行如何使用操作系统提供的多任务抽象的。对于操作所涉及到的资源对象，我并没有谈及。这就是这篇文章的内容：让我们从实用的角度来理解一下操作系统对资源的抽象：文件系统。
+The former article about shell is from the point of view of multi-tasking.  This one we expand from the view of resource abstraction --- files.
 
 <!-- more -->
 
-## CPU 抽象
+## Abstraction
 
-首先从物理层面，你的资源都通过物理接口传递给物理计算机进行处理了。如果我们要定位某个资源的话，大概可以用”在x接口上的磁盘里第y个扇区的第a到第b个区块“的方式了。不同的资源还可能有不同的接口定义，这让描述定位非常困难。所以在 CPU 层面，其实就已经做了一层抽象了。对所有的可读/写区（包括磁盘，内存，也包括键盘，显示屏等各种外设），CPU 提供了 线性表 的抽象。即相当于把空间从0开始按数字编号，每个空间代表一个单位长度的可读/写空间。这个时候我们就可以用 ”内存地址 0x7f6812ca 长度 128kb” 的方式来定位资源空间了。
+In the hardware level the addressing of an external resource differs from their interfaces.  The result of the first abtraction attemptation is the unified addressing space.  The accessing of external resources now is interpreted as reading/writing from/to an address within a linear space.
 
-## 文件系统
+Apparently a meaningless number is a bad name for human.  We will want a naming system that mark each piece of resource with memorable text.  Furthermore, the organizing requirement demanding the introduction of the "belongs to" relationship.  The combination of the two is the common general purpose file system implementation, a hierarchical name-tagging tree.
 
-显然一个无意义的数字对人类来说非常不友好。我们就可以考虑实现一个系统，让它给各个资源起个有内涵的名字便于人类理解记忆。这种文件系统的实现方式有很多，比如 git 就是一个文件系统，它把每个资源称为 “blob”，给他们起的名字是一个随机的哈希值，人们可以给哈希值打上“branch”或“tag”的字符标签来便于记忆。
+By convention the reference of any node in the tree can be represented by the path from root to itself.  Normally we pick a single character as the separator, say "%".  Then the path "root%one%leaf" will represent a node belongs to node "one" which belongs to root node.  The resource representatives are called "files" and the topology representatives are called "directories".  The meaning of "everything is a file" is indeed the reference of the addressing unification.
 
-当然这种特殊的文件系统有它自己的功能需求。而更常见的情况下，我们都把文件系统设计成了一个 层级树 的形式。一般我们还会提供一种方便的表示格式，比如把每个树节点起一个字符的名字，然后把各个节点用某个特殊字符分隔开来，这种表示我们称为 路径(path)。假定我们的分隔符是 “%”，我的树的根节点是 “root”，那么根节点下一个叫做 “one” 的节点下的一个叫做 “leaf” 的叶子节点，就可以用 `root%one%leaf` 的形式来表示了。一般来说，只有叶子节点才代表一个资源，我们把它命名为 文件(file)；而其他非叶子节点，只是纯粹地用来表示文件间的拓扑结构而已，我们把它命名为 文件夹(directory)。
+## Implementation
 
-> 例子：Windows下，文件系统的根节点可以有多个，它们用盘符来表示，比如 C: ；文件夹间的分隔符用 “\”，所以一个 Windows 下的文件表示格式就像这样：`C:\Program Files\HearthStone\HearthStone.exe`。每个盘符用来表示不同的物理介质，不过后来被虚拟化了。
-
-> 这里正好对那些从 XP 时代过来的上古时代用户说两句话，1. Win7 之后，可以非常安全地重装系统而不需要格式化硬盘了； 2. 对同一块物理硬盘进行虚拟的盘符划分（也就是你们说的分区）的行为是一件被历史淘汰的事情。
-
-在 POSIX 系统里，有句名言叫”everything is a file”。这句话的内涵就不在这拓展（比如设备，socket都被看做文件），但它的其中一面，证明了它的设计的统一性：它的文件系统的根节点只有一个，不管你这个文件系统实际管理着一个物理硬盘还是多个，每一个硬盘都只是代表着文件树里的某个节点而已。
-
-这个根节点的名字很奇怪，叫做 ‘/‘，读作 ‘slash’；它的分隔符也是 ‘/‘，根节点和它的子节点连着写的时候不需要分隔。所以这样子，写出来像这样了： `/usr/sbin/mount` 。
-
-> 关于这个 “everything is a file”，简单点说，file 其实是对 “可读/写线性空间” 的抽象，自然不必把自己局限在硬盘这一特定物理介质上。所以这句话的完整阐述应该是 “everything is readable and/or writable is a file”
-
-此外，shell 还提供一些特殊的节点的别名：
-
-- `~` 代表你的家目录，具体是指哪里自己查看 $HOME 的值去。
-- 在 shell 里面，我们会有一个当前正在指向的文件夹位置，称为 working directory ，这个位置可以通过 pwd 命令或者查看$PWD 的值找到。
-- `.` 代表当前的工作目录；`..` 代表当前工作目录的上一层目录。（根目录 / 的上一层目录还是它自己）
-- 我们可以用 `.` 或者 `..` 起头的路径来表示一个相对于当前目录的节点位置，这被称为相对路径(relative path)
-- `.` 的开头在大部分时候可以被省略，比如 `touch ./dir/new-file` 等价于 `touch dir/new-file`
-- 当一个单一的文件名作为 shell 第一个参数时，`.` 不能被省略。比如 `new-file` 的意思是在 `$PATH` 里找到一个名字叫这个的文件并运行它；而 `./new-file` 的意思则是运行当前文件夹下的这个文件。
-
-## 实现原理
-
-假设你是这个文件系统的实现者，你会怎么实现这个线性表到文件树的转化呢？对任何学过数据结构的人来说我想这都很显而易见 — 去实现一个树结构不就好了。
-
-对于叶子节点，我们需要保存它对应资源的线性表地址（address）；对非叶子节点，我们需要保存它的子节点们(children)。同时我还要给每个节点一个方便被引用的标识(id)。这样的一个节点结构就像这样咯：
+A simplified tree node data structure would look like this: it should contains the underlying linear address of the resource if it's a file, and pointers to its children if it's a directory.  It may also has a unique identifier within the system.
 
 ```c
 typedef struct NodeT {
@@ -55,83 +30,20 @@ typedef struct NodeT {
 } Node;
 ```
 
-这是一个文件的例子：
+Here's an example of a file:
 
 ```c
 Node file_node = Node { .name = "haha", .id = 23333, .address = 0x7869cd12, .children = null }
 ```
 
-这是一个文件夹的例子：
+An example for a directory:
 
 ```c
 Node dir_node = Node { .name = "lala", .id = 13684, .address = -1, .children = [23333, 15682, 33497] }
 ```
 
-这样就构成了我们的文件系统的结构了。要读取一个文件很简单，我们只需要找到这个节点里保存的地址就可以了；新建一个文件/文件夹也简单，只需要新建这个节点，然后把它添加进某个现有非叶子节点的 children 数组里就可以了；反之，删除则更简单，我们只需要从它的父节点处，把它对应的 id 给删了，我们就没法从文件系统里再找到它了。不过它对应地址的内容可未必就被清除了（这也是为什么陈老师会出事的原因）。
+Nodes are traced via their ancestors and all the tracings are started from the root node. If we no longer want a node, the easiest way is to make it untraceable. Hence, deleting is basically sematically equivalent to unlinking.
 
-在这种结构里，我们还可以新建一个节点，让它的 id 等于一个现有的节点的 id 。这样我们就可以实现所谓的链接文件。
+Furthermore, the structure of file system is not necessarily be constrained to a tree. Multiple directories can share one child as long as they hold a child record with the same id number. This way we created hard linked files. Every child record of that id number is a hard link to others.
 
-> 现在我们再看看为什么 `mkdir fuck/me` 会报错。因为它首先要找到一个名字叫 “fuck” 的节点，然后修改它的 children 数组以添加上这个新的叫做 “me” 的节点。
->
-> 至于 mkdir 能否一步到位，先创建 fuck ，再创建 fuck/me ？自己去看 mkdir -h 帮助。
-
-## 权限系统
-
-在 POSIX 文件系统下，每一个节点都有权限，特殊权限这里不展开了，就说最常用的三大权限：读(read)，写(write)，和执行(execute)。它设计了一种非常紧凑的方式来表示这个权限，即用连续的 “rwx” 三个字符分别代表着三个权限。当对应的字符位置上是这个字符时，这个权限就是具备的；否则，当这个位置上是 “-“ 时，说明这个权限是不具备的。当用户试图对一个节点进行不具备的权限的操作的时候，就会被以 “Permission denied” 的理由给拒绝。
-
-那么，这个权限对所有人都是一样的吗？不是的，权限系统里还有“拥有者”和“用户组”的概念。每个节点都保存有它的拥有者，拥有它的用户组的信息。权限系统允许针对 “拥有者”，“在用户组中的成员”，以及“其他人”，分别设置不同的权限。在表示权限的时候，第一个字符用来指示节点的类型，比如 “-” 表示文件，”d” 表示文件夹，接着紧跟三组 “rwx” 字符串分别代表自己，用户组，和其他人的权限。
-
-比如我新建了一个文件，我规定，我自己有可读可写可执行的权限，在组内的成员拥有可读可执行的权限，其他人只有可读的权限，这个状态位就类似这样：
-
-```
--rwxr-xr--
-```
-
-当我们使用 ls -l 时，它会列出当前文件夹下所有节点的权限信息，拥有者和拥有的用户组的信息：
-
-```
-▶ ls -l
-total 24
--rw-r--r--    1 yangliu  staff   1922 Jul 29 13:46 _config.yml
--rw-r--r--    1 yangliu  staff    174 Jul 29 13:48 db.json
-......
-```
-
-所以他们的拥有者都是 “yangliu”，拥有它们的用户组就是 “staff” 组。
-
-下面看看对文件夹的权限。我们知道这些权限其实是针对节点的，即对这个节点是否具备可读可写可执行的能力。那么对一个文件夹节点具备可读的能力代表什么呢？代表你可以读取它的 children 属性的能力；可写呢，代表你可以修改它的 children 属性的能力；可执行的意义，则被设计为，你是否拥有具备将该节点设定为 working directory 的能力。如果从 shell 允许的操作来看，就大概会是这样：
-
-| permission | allowed operations |
-| --- | --- |
-| r	| ls |
-| w	| create/remove/rename files under it |
-| x	| cd to it |
-
-## 底层实现
-
-这个作为扩展阅读，考虑下在 C 里面怎么实现这个权限系统？显然，我们可以用一串 “0101…” 的 bit 串来表示状态，其中每个特定位置的 bit 代表某个选项是否打开。我们把这种结构称为一个 flag set。
-
-我们可以这么设计：
-
-```
-const int EXECUTABLE = 0b001;
-const int WRITABLE   = 0b010;
-const int READABLE   = 0b100;
-```
-
-显然这和用 “rwx” 字符串的表达方式是完全等价的，不过一个 flag set 还有一个好处就是，它的整个的一个状态可以被转化成一个整数。比如 “rw-“，即是 0b110 ，即代表整数 6 。所以我们现在可以用一个单一的数字来表达可读，可写，可执行的组合状态了。
-
-我们用 chmod 命令来改变一个节点的权限，还拿上面那个例子举例：
-
-```
-▶ touch fuckme # 新建文件 fuckme
-▶ chmod u=rwx,g=rx,o=r fuckme # user 可读可写可执行； group 可读可执行； others 可读
-```
-
-这句话，就可以用上面提到的整数来进行简化：
-
-```
-▶ chmod 754 fuckme
-▶ ls -l fuckme
--rwxr-xr--  1 yangliu  staff  0 Jul 29 15:59 fuckme
-```
+The structure is not constrained to a DAG, too. We can easily create a cycle in the file system. The only problem is they're meaningless.
