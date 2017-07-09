@@ -30,7 +30,11 @@ def appendOne(lst=_defval):
 t = ([],)
 t[0].append(1) # acceptable!
 ```
-Why: I consider it a bug of the CPython implementation. The implementation only reject the reassignment of the references the tuple holds. The mutation inside the referenced object is unprotected.
+According to the document:
+
+> (The value of an immutable container object that contains a reference to a mutable object can change when the latter’s value is changed; however the container is still considered immutable, because the collection of objects it contains cannot be changed. So, immutability is not strictly the same as having an unchangeable value, it is more subtle.) An object’s mutability is determined by its type; for instance, numbers, strings and tuples are immutable, while dictionaries and lists are mutable.
+
+
 
 ## the chain assignment is from left to right
 ```python

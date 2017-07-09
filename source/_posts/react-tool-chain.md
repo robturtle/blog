@@ -252,8 +252,6 @@ No, [webpack can't bundle itself](https://github.com/webpack/webpack/issues/1434
 
 #### MultiCompiler.outputPath
 
-> I've modify the implementation of webpack-dev-middleware to avoid this problem. PR is expected after I update its tests.
-
 Let's say you have configurations grouped as an array. When passed to `webpack()` it will generate a `MultiCompiler`. If the `outputPath` are different among configurations, the `outputPath` will be set as the lowest common root path: [code](https://github.com/webpack/webpack/blob/master/lib/MultiCompiler.js#L36)
 
 ```javascript
