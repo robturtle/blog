@@ -1311,7 +1311,7 @@ hexo-deployer-git@^0.1.0:
     moment "^2.11.2"
     swig "^1.4.2"
 
-hexo-deployer-heroku@^0.1.0:
+hexo-deployer-heroku@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/hexo-deployer-heroku/-/hexo-deployer-heroku-0.1.1.tgz#1dad8accc23d4c0b112e17052c6bdeadc2a86672"
   dependencies:
