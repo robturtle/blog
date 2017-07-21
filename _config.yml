@@ -79,8 +79,5 @@ theme: next
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-- type: git
-  repository: git@github.com:robturtle/blog.git
-  branch: gh-pages
 - type: heroku
   repository: https://git.heroku.com/blog-yangliu-online.git
