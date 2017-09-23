@@ -6,6 +6,8 @@ tags:
 ---
 This is a runthrough of a typical workflow building a web app with React. It's served as a index map for people who are not yet into this area. The demonstrating repository is at https://github.com/robturtle/react-toolchain .
 
+NOTE: I'm currently working on a Rails project. So the rest parts of this article will be upated in a later future.
+
 <!-- more -->
 
 > A big picture of a web application:
