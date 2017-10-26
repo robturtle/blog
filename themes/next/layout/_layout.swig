@@ -12,9 +12,11 @@
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="{{ page.lang || page.language || config.language }}">
+  <!--
   <div style="margin-top: -25px; margin-bottom: -25px; background-color: #fcf8e6; text-align: center;">
     <p></p>Hi! I'm looking for a developer job in the US. Go checkout my <a href="/portfolio.html">portfolio</a>!</p>
   </div>
+  -->
 
 
   {% include '_scripts/third-party/analytics.swig' %}
